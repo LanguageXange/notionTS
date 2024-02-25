@@ -39,7 +39,7 @@ export const BasicNode = ({
       // meaning that we are not editting the value
       nodeRef.current.textContent = node.value;
     }
-  }, [node]);
+  }, [node, isFocused]);
 
   const handleInput: FormEventHandler<HTMLDivElement> = ({ currentTarget }) => {
     const { textContent } = currentTarget;
@@ -68,12 +68,23 @@ export const BasicNode = ({
       if (target.textContent?.length === 0) {
         removeNodeByIndex(index);
         updateFocusedIndex(index - 1); // focus on previous node
-      } else if (window?.getSelection()?.anchorOffset === 0) {
+      } else if (window.getSelection()?.anchorOffset === 0) {
         // cursor is at the beginning of the line
+        e.preventDefault();
         updateFocusedIndex(index - 1);
+        // move cursor to the end of the previous node
+        const prevNode = target.parentNode?.previousSibling?.firstChild;
+        if (prevNode) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          //range.selectNodeContents(prevNode);
+          range.setStart(prevNode, prevNode.childNodes.length);
+          range.collapse(true);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+        }
       }
     }
-    // TO DO -  move the cursor to the end of the line of the previous paragraph
   };
 
   return (
