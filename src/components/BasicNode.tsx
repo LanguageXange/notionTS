@@ -4,9 +4,10 @@ import {
   FormEventHandler,
   KeyboardEventHandler,
 } from "react";
-import { NodeData } from "../utils/types";
+import { NodeData, NodeType } from "../utils/types";
 import { nanoid } from "nanoid";
 import { useAppState } from "../context/AppStateProvider";
+import { Command } from "./Command";
 
 // Page will have a list of nodes and need to remeber which one is focused
 type BasicNodeProps = {
@@ -24,7 +25,10 @@ export const BasicNode = ({
 }: BasicNodeProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
 
-  const { changeNodeValue, removeNodeByIndex, addNode } = useAppState();
+  const showCommandPanel = isFocused && node.value.match(/^\//); // starts with a slash
+
+  const { changeNodeValue, removeNodeByIndex, addNode, changeNodeType } =
+    useAppState();
 
   useEffect(() => {
     if (isFocused) {
@@ -87,6 +91,13 @@ export const BasicNode = ({
     }
   };
 
+  function parseCommand(nodeType: NodeType) {
+    if (nodeRef.current) {
+      changeNodeType(index, nodeType);
+      nodeRef.current.textContent = ""; // to clear slash command otherwise we will see "/heading"
+    }
+  }
+
   return (
     <div
       className={`relative my-3 px-4 py-2 rounded-lg text-left ${
@@ -98,11 +109,16 @@ export const BasicNode = ({
         onInput={handleInput}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className="outline-none"
+        className={`outline-none ${node.type}`}
         contentEditable
         suppressContentEditableWarning
       />
-      {isFocused && !nodeRef?.current?.textContent && (
+
+      {showCommandPanel && (
+        <Command nodeText={node.value} selectItem={parseCommand} />
+      )}
+
+      {isFocused && !nodeRef?.current?.textContent && node.type === "text" && (
         <span className="absolute top-0 left-0 px-4 py-2 text-md text-slate-300 italic">
           Type Something Here ...
         </span>
