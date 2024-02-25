@@ -4,7 +4,7 @@ type Props = {
   nodes: NodeData[];
 };
 
-// custom hook
+// custom hook that updates focusIndex on arrow up and down
 export const useFocusedNodeIndex = ({
   nodes,
 }: Props): [number, Dispatch<SetStateAction<number>>] => {

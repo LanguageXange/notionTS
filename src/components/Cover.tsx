@@ -14,7 +14,7 @@ export const Cover = () => {
     <div className="flex-col">
       <img
         className="mx-auto my-6 rounded-lg"
-        src="https://placehold.co/600x400"
+        src="https://placehold.co/800x400"
         alt="cover image"
       />
       <button

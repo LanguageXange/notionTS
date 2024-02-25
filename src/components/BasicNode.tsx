@@ -6,6 +6,7 @@ import {
 } from "react";
 import { NodeData } from "../utils/types";
 import { nanoid } from "nanoid";
+import { useAppState } from "../context/AppStateProvider";
 
 // Page will have a list of nodes and need to remeber which one is focused
 type BasicNodeProps = {
@@ -13,9 +14,6 @@ type BasicNodeProps = {
   updateFocusedIndex: (id: number) => void;
   isFocused: boolean;
   index: number;
-  addNode: (node: NodeData, id: number) => void;
-  removeNodeByIndex: (id: number) => void;
-  changeNodeValue: (id: number, value: string) => void;
 };
 
 export const BasicNode = ({
@@ -23,11 +21,10 @@ export const BasicNode = ({
   updateFocusedIndex,
   isFocused,
   index,
-  addNode,
-  removeNodeByIndex,
-  changeNodeValue,
 }: BasicNodeProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
+
+  const { changeNodeValue, removeNodeByIndex, addNode } = useAppState();
 
   useEffect(() => {
     if (isFocused) {
