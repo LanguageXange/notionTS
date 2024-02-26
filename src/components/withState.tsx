@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "../utils/supabase-client";
 import startPageScaffold from "../scaffold.json";
 import { Loader } from "../components/Loader";
+import { createPage } from "../utils/misc";
+import { nanoid } from "nanoid";
 
 type InjectedProps = {
   initialState: Page;
@@ -11,7 +13,7 @@ type InjectedProps = {
 
 type PropsWithoutInjected<TBaseProps> = Omit<TBaseProps, keyof InjectedProps>;
 
-// essentially we no longer need to pass in initialState props in AppStateProvider 
+// essentially we no longer need to pass in initialState props in AppStateProvider
 export function withState<TProps>(
   WrappedComponent: React.ComponentType<
     PropsWithoutInjected<TProps> & InjectedProps
@@ -21,7 +23,7 @@ export function withState<TProps>(
     const match = useMatch("/:slug");
     const pageSlug = match ? match.params.slug : "start";
 
-    const [initialState, setInitialState] = useState<Page | null>(null);
+    const [initialState, setInitialState] = useState<Page | null>();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | undefined>();
 
@@ -39,6 +41,15 @@ export function withState<TProps>(
             .select("title, id, cover, nodes, slug")
             .match({ slug: pageSlug, created_by: user.id })
             .single();
+      
+          // console.log(data, "supabase data");
+          // console.log(pageSlug, "page slug");
+
+          // need to disable row level security policy and create own policy
+          if(data){
+            const parsedData = {...data, nodes: JSON.parse(data.nodes)}
+            setInitialState(parsedData);
+          }
           if (!data && pageSlug === "start") {
             const result = await supabase
               .from("pages")
@@ -46,12 +57,13 @@ export function withState<TProps>(
                 ...startPageScaffold,
                 slug: "start",
                 created_by: user.id,
+                id: nanoid(),
               })
               .single();
+
+            console.log(result, "what is result");
             setInitialState(result?.data);
-          } else {
-            setInitialState(data);
-          }
+          } 
         } catch (e) {
           if (e instanceof Error) {
             setError(e);
@@ -75,7 +87,9 @@ export function withState<TProps>(
     }
 
     if (!initialState) {
-      return <div className="">Page not found</div>;
+      // temporary workaround while I debugging supabase
+      setInitialState(createPage());
+      return <div className="">Cannot find this page</div>;
     }
 
     return <WrappedComponent {...props} initialState={initialState} />;
