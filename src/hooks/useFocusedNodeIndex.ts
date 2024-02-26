@@ -13,11 +13,10 @@ export const useFocusedNodeIndex = ({
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowUp") {
-        // prevent index to be negative
         setFocusIndex((index) => Math.max(index - 1, 0));
       }
       if (e.key === "ArrowDown") {
-        setFocusIndex((index) => Math.min(index + 1, nodes.length));
+        setFocusIndex((index) => Math.min(index + 1, nodes.length - 1));
       }
     };
 

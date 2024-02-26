@@ -77,7 +77,8 @@ export const BasicNode = ({
         e.preventDefault();
         updateFocusedIndex(index - 1);
         // move cursor to the end of the previous node
-        const prevNode = target.parentNode?.previousSibling?.firstChild;
+        const prevNode =
+          target.parentNode?.parentNode?.previousSibling?.lastChild?.firstChild;
         if (prevNode) {
           const selection = window.getSelection();
           const range = document.createRange();
@@ -100,8 +101,8 @@ export const BasicNode = ({
 
   return (
     <div
-      className={`relative my-3 px-4 py-2 rounded-lg text-left ${
-        isFocused ? `bg-slate-50` : ""
+      className={`relative ml-6 py-2 px-2 rounded-lg text-left w-full ${
+        isFocused ? `bg-neutral-200` : ""
       }`}
     >
       <div
@@ -109,23 +110,23 @@ export const BasicNode = ({
         onInput={handleInput}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className={`outline-none ${node.type}`}
+        className={`outline-none  ${node.type}`} // see App.css
         contentEditable
         suppressContentEditableWarning
       />
 
       {showCommandPanel && (
-        <Command nodeText={node.value} selectItem={parseCommand} />
+        <Command nodeText={node.value} selectItem={parseCommand} activeType={node.type} />
       )}
 
       {isFocused && !nodeRef?.current?.textContent && node.type === "text" && (
-        <span className="absolute top-0 left-0 px-4 py-2 text-md text-slate-300 italic">
-          Type Something Here ...
+        <span className="absolute top-2 left-2 text-md text-slate-300 italic select-none">
+          Start Typing ...
         </span>
       )}
 
       {isFocused && (
-        <span className="absolute top-2 -left-3 text-sm text-slate-300">
+        <span className="absolute top-2 -right-3 text-sm text-slate-300">
           {index}
         </span>
       )}

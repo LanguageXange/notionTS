@@ -8,7 +8,7 @@ const initialState = createPage();
 function App() {
   return (
     <AppStateProvider initialState={initialState}>
-      <div className="border-2 border-slate-500 rounded-lg py-6 px-4">
+      <div className="border-2 border-blue-500 rounded-lg py-6 px-4">
         <Page />
       </div>
     </AppStateProvider>

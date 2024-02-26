@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { arrayMove } from "@dnd-kit/sortable";
+
 import { Page, NodeData, NodeType } from "../utils/types";
 
 export const usePageState = (initialState: Page) => {
@@ -43,6 +45,14 @@ export const usePageState = (initialState: Page) => {
     setPage({ ...page, cover });
   };
 
+  // reorder nodes with DnD
+  const reorderNodes = (activeId: string, overId: string) => {
+    const oldId = page.nodes.findIndex((node) => node.id === activeId);
+    const newId = page.nodes.findIndex((node) => node.id === overId);
+    const newNodes = arrayMove(page.nodes, oldId, newId);
+    setPage({ ...page, nodes: newNodes });
+  };
+
   return {
     nodes: page.nodes,
     title: page.title,
@@ -54,5 +64,6 @@ export const usePageState = (initialState: Page) => {
     setCoverImage,
     setTitle,
     setNodes,
+    reorderNodes,
   };
 };
