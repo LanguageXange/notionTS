@@ -3,10 +3,8 @@ import { Auth } from "./components/Auth";
 import { Page } from "./components/Page";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AppStateProvider } from "./context/AppStateProvider";
-import { createPage } from "./utils/misc";
 import { Routes, Route } from "react-router-dom";
 
-const initialState = createPage();
 
 function App() {
   return (
@@ -17,7 +15,7 @@ function App() {
         element={
           <PrivateRoute
             component={
-              <AppStateProvider initialState={initialState}>
+              <AppStateProvider>
                 <div className="border-2 border-blue-500 rounded-lg py-6 px-4">
                   <Page />
                 </div>
@@ -31,7 +29,7 @@ function App() {
         element={
           <PrivateRoute
             component={
-              <AppStateProvider initialState={initialState}>
+              <AppStateProvider >
                 <Page />
               </AppStateProvider>
             }

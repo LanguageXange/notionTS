@@ -21,6 +21,7 @@ export const Auth = () => {
       alert("something is wrong!");
     } finally {
       setIsLoading(false);
+      setEmail("")
     }
   }
 

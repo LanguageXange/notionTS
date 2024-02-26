@@ -1,11 +1,12 @@
-import { useState } from "react";
-
 import { arrayMove } from "@dnd-kit/sortable";
-
 import { Page, NodeData, NodeType } from "../utils/types";
+import { useSyncState } from "./useSyncState";
+import { updatePage } from "../utils/misc";
+
+
 
 export const usePageState = (initialState: Page) => {
-  const [page, setPage] = useState<Page>(initialState);
+  const [page, setPage] = useSyncState(initialState,updatePage);
 
   // extract similar logic to `updateNode` function
   const updateNode = (cb: (nodes: NodeData[]) => void) => {

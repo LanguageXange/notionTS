@@ -22,6 +22,7 @@ export const AuthSessionProvider = ({ children }: SessionProviderProps) => {
   useEffect(() => {
     const auth = async () => {
       const { data, error } = await supabase.auth.getSession();
+      console.log(data,'what is data in getSession')
       if (data.session) {
         setLoading(false);
         setSession(data.session);
