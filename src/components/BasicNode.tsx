@@ -101,7 +101,7 @@ export const BasicNode = ({
 
   return (
     <div
-      className={`relative ml-6 py-2 px-2 rounded-lg text-left w-full ${
+      className={`cursor-auto relative ml-6 py-2 px-2 rounded-lg text-left w-full ${
         isFocused ? `bg-neutral-200` : ""
       }`}
     >
@@ -120,13 +120,13 @@ export const BasicNode = ({
       )}
 
       {isFocused && !nodeRef?.current?.textContent && node.type === "text" && (
-        <span className="absolute top-2 left-2 text-md text-slate-300 italic select-none">
+        <span className="absolute top-2 left-3 text-md text-slate-400 italic select-none">
           Start Typing ...
         </span>
       )}
 
       {isFocused && (
-        <span className="absolute top-2 -right-3 text-sm text-slate-300">
+        <span className="absolute top-1/2 -translate-y-1/2 -right-4 text-sm text-slate-300">
           {index}
         </span>
       )}

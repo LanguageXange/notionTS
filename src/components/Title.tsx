@@ -23,7 +23,7 @@ export const Title = ({ title, changePageTitle, addNode }: TitleProps) => {
         ref={headerRef}
         contentEditable
         suppressContentEditableWarning
-        className="text-5xl my-8 outline-none border border-slate-500"
+        className="text-6xl my-8 font-bold outline-none"
         onInput={(e) => changePageTitle(e.currentTarget.textContent || "")}
         onKeyDown={(e) => {
           if (e.key === "Enter") {

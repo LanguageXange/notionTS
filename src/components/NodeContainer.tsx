@@ -27,7 +27,7 @@ export const NodeContainer = ({ node, ...props }: NodeContainerProps) => {
     >
       <div
         {...listeners}
-        className="text-xl absolute p-2 -top-1 -left-2 cursor-grab font-bold opacity-10 hover:opacity-100 transition-opacity"
+        className="text-xl absolute p-2 top-1/2 -translate-y-1/2 -left-2 cursor-grab font-bold opacity-10 hover:opacity-100 transition-opacity"
       >
         ⁙
       </div>
