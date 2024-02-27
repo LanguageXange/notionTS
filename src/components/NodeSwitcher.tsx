@@ -1,5 +1,6 @@
 import { NodeData, NodeType } from "../utils/types";
 import { BasicNode } from "./BasicNode";
+import { PageNode } from "./PageNode";
 
 type NodeSwitcherProp = {
   node: NodeData;
@@ -20,7 +21,9 @@ export const NodeSwitcher = ({ node, ...props }: NodeSwitcherProp) => {
   if (textNodes.includes(node.type)) {
     return <BasicNode node={node} {...props} />;
   }
-
+  if (node.type == "page") {
+    return <PageNode node={node} {...props} />;
+  }
   // to do later for handling image and page node type
   return null;
 };
