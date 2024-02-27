@@ -13,7 +13,7 @@ type PageNodeProps = {
 
 export const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
   const navigate = useNavigate();
-  const [pageTitle, setPageTitle] = useState("untitled page");
+  const [pageTitle, setPageTitle] = useState("");
   const { removeNodeByIndex } = useAppState();
 
   console.log(node, "what is node in PageNode");
@@ -40,14 +40,14 @@ export const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
 
   useEffect(() => {
     const fetchPageTitle = async () => {
-        // we need to create another table to store 'page' perhaps?
+      // we need to create another table to store 'page' perhaps?
       const { data } = await supabase
         .from("page")
         .select("title")
         .eq("slug", node.value)
         .single();
-    
-        console.log(data,'what is data')
+
+      console.log(data, "what is data");
       setPageTitle(data?.title);
     };
     if (node.type === "page" && node.value) {
@@ -57,9 +57,10 @@ export const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
 
   // node.value is "" when you created the page for the first time
   // To Fix - we need a way to actually create a new page with blank state
+  // we should accept nodes[] instead
   const navigateToPage = () => {
-    navigate(`/${node.id}`);
-  }
+    navigate(`/${node.value}`);
+  };
 
   return (
     <div onClick={navigateToPage} className="bg-blue-300">

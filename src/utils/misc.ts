@@ -22,3 +22,24 @@ export const updatePage = debounce(
   },
   500
 );
+
+
+
+// handle image upload
+
+export const handleImageUpload = async (file?: File) => {
+	try {
+		if(!file){
+			throw new Error("You must select an image to upload");
+		}
+
+		const fileExt = file.name.split(".").pop()
+		const fileName = `newImage-${Math.round(Math.random()*100)}.${fileExt}`
+		const filePath = fileName;
+		await supabase.storage.from("images").upload(filePath, file);
+    console.log(fileExt, fileName, filePath)
+		return {filePath, fileName}
+	} catch (e) {
+		alert(e)
+	}
+}
